@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZUS COFFEE | The Artisanal Refreshment Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-drink="thai-tea">
+
+  <!-- Liquid & Particle Background Canvas -->
+  <canvas id="liquidCanvas"></canvas>
+
+  <!-- Ambient Light Orbs -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="brand-logo">
+        <img src="assets/zus_logo.png" alt="ZUS COFFEE" class="logo-img" id="brandLogo">
+      </div>
+      <span class="brand-tagline">Necessity, Not A Luxury</span>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="view-toggles">
+      <button class="toggle-btn active" id="btnShowcaseView" title="Spotlight Mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+        <span>3D Showcase</span>
+      </button>
+      <button class="toggle-btn" id="btnPosterMode" title="Poster Grid Mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <span>Poster 2x2 Grid</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <!-- Audio Synth Toggle -->
+      <button class="icon-btn" id="audioToggle" title="Toggle Sound FX (Fizz, Ice, Splash)">
+        <div class="sound-bars">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+          <span class="bar bar-4"></span>
+        </div>
+        <span class="btn-label">Sound FX</span>
+      </button>
+
+      <!-- Cart Button -->
+      <button class="cart-btn" id="cartBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span class="cart-text">Orders</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SHOWCASE HERO -->
+  <main class="hero-container" id="showcaseView">
+    
+    <!-- Left Column: Drink Typography & Information -->
+    <div class="hero-info">
+      <div class="badge-row">
+        <span class="pill-badge" id="drinkCategory">Signature Refreshment</span>
+        <span class="pill-badge pill-cal" id="drinkCalories">180 kcal</span>
+      </div>
+
+      <div class="title-wrap">
+        <h2 class="sub-label" id="drinkSubtitle">CRAFTED SPECIALTY</h2>
+        <h1 class="main-title" id="drinkTitle">THAI TEA LATTE</h1>
+        <p class="thai-title" id="drinkThaiTitle">ชาไทยลาเต้พรีเมียม สูตรเข้มข้นกลมกล่อม</p>
+      </div>
+
+      <p class="description" id="drinkDescription">
+        ชาไทยรสเข้มข้นสกัดพิเศษ ผสานนมสดหอมมันหวานกำลังดี ตกแต่งด้วยกลิ่นอายส้มสดชื่นและใบชาซีลอนคั่วหอม อร่อยสดชื่นแบบพรีเมียมในทุกหยด
+      </p>
+
+      <!-- Flavor Sensory Profile (Radar + Notes) -->
+      <div class="flavor-section">
+        <div class="flavor-meta">
+          <h4 class="section-heading">Sensory Flavor Profile</h4>
+          <div class="flavor-tags" id="flavorTags">
+            <span class="flavor-tag">Bold Tea</span>
+            <span class="flavor-tag">Velvety Cream</span>
+            <span class="flavor-tag">Spiced Aroma</span>
+          </div>
+        </div>
+        <div class="radar-box">
+          <canvas id="flavorRadar" width="180" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <div class="price-box">
+          <span class="price-currency">฿</span>
+          <span class="price-value" id="drinkPrice">85</span>
+          <span class="price-unit">/ Cup</span>
+        </div>
+
+        <button class="cta-btn primary-cta" id="btnCustomize">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          <span>ปรับแต่งรสชาติ (Customize)</span>
+        </button>
+
+        <button class="cta-btn quick-add-btn" id="btnQuickAdd" title="Quick Add">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>สั่งเลย</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Center/Right Column: 3D Interactive Parallax Beverage Visual -->
+    <div class="hero-visual">
+      <div class="interactive-stage" id="stage3D">
+        
+        <!-- Back Splash Ripple Aura -->
+        <div class="splash-aura" id="splashAura"></div>
+
+        <!-- Floating Decorative Ingredients Parallax -->
+        <div class="floating-layer layer-back" id="parallaxBack"></div>
+
+        <!-- Main Beverage Cup Container with 3D Tilt -->
+        <div class="cup-card" id="cupCard">
+          <div class="cup-sheen"></div>
+          <img src="assets/cup_thai_tea.png" alt="Drink Cup" class="cup-image" id="activeCupImg">
+          
+          <!-- Interactive Floating Bubbles / Drops On Hover -->
+          <div class="cup-sparkles" id="cupSparkles"></div>
+        </div>
+
+        <!-- Foreground Floating Ingredients -->
+        <div class="floating-layer layer-front" id="parallaxFront"></div>
+
+        <!-- Interactive Physics Prompt -->
+        <div class="tilt-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>ขยับเมาส์ หรือแตะเพื่อสัมผัส Parallax 3D & แตะที่แก้วเพื่อสร้างละอองความซ่า!</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BEVERAGE SELECTOR DOCK (Bottom Carousel Selector) -->
+  <nav class="drink-selector-dock" id="drinkSelector">
+    <div class="dock-container">
+      <div class="dock-title">
+        <span>เลือกเครื่องดื่ม (4 SIGNATURE DRINKS)</span>
+      </div>
+      <div class="dock-items">
+        <!-- Item 1: Thai Tea -->
+        <button class="dock-item active" data-id="thai-tea">
+          <div class="dock-thumb">
+            <img src="assets/cup_thai_tea.png" alt="Thai Tea">
+          </div>
+          <div class="dock-info">
+            <span class="dock-name">Thai Tea Latte</span>
+            <span class="dock-sub">ชาไทยลาเต้</span>
+          </div>
+          <div class="dock-glow glow-orange"></div>
+        </button>
+
+        <!-- Item 2: Strawberry Cream -->
+        <button class="dock-item" data-id="strawberry">
+          <div class="dock-thumb">
+            <img src="assets/cup_strawberry.png" alt="Strawberry Cream">
+          </div>
+          <div class="dock-info">
+            <span class="dock-name">Strawberry Cream</span>
+            <span class="dock-sub">สตรอว์เบอร์รีครีม</span>
+          </div>
+          <div class="dock-glow glow-pink"></div>
+        </button>
+
+        <!-- Item 3: Mint Lime Soda -->
+        <button class="dock-item" data-id="mint-lime">
+          <div class="dock-thumb">
+            <img src="assets/cup_mint_lime.png" alt="Mint Lime Soda">
+          </div>
+          <div class="dock-info">
+            <span class="dock-name">Mint Lime Soda</span>
+            <span class="dock-sub">มิ้นต์มะนาวโซดา</span>
+          </div>
+          <div class="dock-glow glow-green"></div>
+        </button>
+
+        <!-- Item 4: Blueberry Lemon Soda -->
+        <button class="dock-item" data-id="blueberry">
+          <div class="dock-thumb">
+            <img src="assets/cup_blueberry_lemon.png" alt="Blueberry Lemon Soda">
+          </div>
+          <div class="dock-info">
+            <span class="dock-name">Blueberry Lemon</span>
+            <span class="dock-sub">บลูเบอร์รีเลมอนโซดา</span>
+          </div>
+          <div class="dock-glow glow-purple"></div>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- POSTER 2x2 GRID VIEW (Direct interactive recreation of user's image) -->
+  <section class="poster-modal-view hidden" id="posterView">
+    <div class="poster-container">
+      <div class="poster-header">
+        <img src="assets/zus_logo.png" alt="ZUS COFFEE" class="poster-main-logo">
+        <p class="poster-subtext">คลิกที่เครื่องดื่มใดก็ได้เพื่อซูมเข้าสู่โหมด 3D Animation Showcase แบบเต็มตา</p>
+      </div>
+
+      <div class="poster-grid">
+        <!-- Quadrant 1: Thai Tea -->
+        <div class="poster-quadrant" data-drink="thai-tea">
+          <div class="quadrant-content">
+            <h3 class="q-title q-thai">THAI TEA LATTE</h3>
+            <div class="q-img-wrap">
+              <img src="assets/thai_tea_latte.png" alt="Thai Tea Latte" class="q-img">
+              <div class="q-liquid-splash"></div>
+            </div>
+            <div class="q-badge">฿85 · หอมเข้มชื่นใจ</div>
+          </div>
+        </div>
+
+        <!-- Quadrant 2: Strawberry Cream -->
+        <div class="poster-quadrant" data-drink="strawberry">
+          <div class="quadrant-content">
+            <h3 class="q-title q-strawberry">STRAWBERRY CREAM</h3>
+            <div class="q-img-wrap">
+              <img src="assets/strawberry_cream.png" alt="Strawberry Cream" class="q-img">
+              <div class="q-liquid-splash"></div>
+            </div>
+            <div class="q-badge">฿95 · หวานนุ่มละมุน</div>
+          </div>
+        </div>
+
+        <!-- Quadrant 3: Mint Lime Soda -->
+        <div class="poster-quadrant" data-drink="mint-lime">
+          <div class="quadrant-content">
+            <h3 class="q-title q-mint">MINT LIME SODA</h3>
+            <div class="q-img-wrap">
+              <img src="assets/mint_lime_soda.png" alt="Mint Lime Soda" class="q-img">
+              <div class="q-liquid-splash"></div>
+            </div>
+            <div class="q-badge">฿80 · ซ่าสดชื่นทะลุมิติ</div>
+          </div>
+        </div>
+
+        <!-- Quadrant 4: Blueberry Lemon Soda -->
+        <div class="poster-quadrant" data-drink="blueberry">
+          <div class="quadrant-content">
+            <h3 class="q-title q-blueberry">BLUEBERRY LEMON SODA</h3>
+            <div class="q-img-wrap">
+              <img src="assets/blueberry_lemon_soda.png" alt="Blueberry Lemon Soda" class="q-img">
+              <div class="q-liquid-splash"></div>
+            </div>
+            <div class="q-badge">฿90 · กาแล็กซีโซดา</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="poster-footer">
+        <button class="cta-btn secondary-cta" id="btnClosePoster">
+          <span>กลับสู่ 3D Showcase View</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE CUSTOMIZER MODAL -->
+  <div class="modal-backdrop hidden" id="customizerModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-tag">Flavor Mixology Lab</span>
+          <h3 class="modal-title" id="customModalDrinkTitle">Customize Your Drink</h3>
+        </div>
+        <button class="modal-close" id="btnCloseModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Ice Option -->
+        <div class="custom-group">
+          <label class="group-label">
+            <span>ระดับความเย็น / น้ำแข็ง (Ice Level)</span>
+            <span class="active-val" id="iceLabel">Normal Ice (100%)</span>
+          </label>
+          <div class="chips-row" id="iceOptions">
+            <button class="chip" data-val="no-ice">No Ice (0%)</button>
+            <button class="chip" data-val="less-ice">Less Ice (50%)</button>
+            <button class="chip active" data-val="normal-ice">Normal Ice (100%)</button>
+            <button class="chip" data-val="extra-ice">Extra Ice (120%)</button>
+          </div>
+        </div>
+
+        <!-- Sweetness Option -->
+        <div class="custom-group">
+          <label class="group-label">
+            <span>ระดับความหวาน (Sweetness Level)</span>
+            <span class="active-val" id="sweetLabel">Standard Sweet (100%)</span>
+          </label>
+          <div class="chips-row" id="sweetOptions">
+            <button class="chip" data-val="0">0% (ไม่หวาน)</button>
+            <button class="chip" data-val="25">25% (หวานน้อยมาก)</button>
+            <button class="chip" data-val="50">50% (หวานน้อย)</button>
+            <button class="chip active" data-val="100">100% (ปกติ)</button>
+            <button class="chip" data-val="120">120% (หวานฉ่ำ)</button>
+          </div>
+        </div>
+
+        <!-- Add-on Toppings -->
+        <div class="custom-group">
+          <label class="group-label">
+            <span>ท็อปปิ้งเพิ่มความอร่อย (Add-on Toppings)</span>
+          </label>
+          <div class="toppings-grid" id="toppingsList">
+            <label class="topping-item">
+              <input type="checkbox" value="boba" data-price="15">
+              <span class="chk-box"></span>
+              <span class="top-name">Popping Boba (+฿15)</span>
+            </label>
+            <label class="topping-item">
+              <input type="checkbox" value="cream" data-price="20">
+              <span class="chk-box"></span>
+              <span class="top-name">Velvet Sweet Foam (+฿20)</span>
+            </label>
+            <label class="topping-item">
+              <input type="checkbox" value="fruit" data-price="15">
+              <span class="chk-box"></span>
+              <span class="top-name">Fresh Fruit Boost (+฿15)</span>
+            </label>
+            <label class="topping-item">
+              <input type="checkbox" value="fizz" data-price="10">
+              <span class="chk-box"></span>
+              <span class="top-name">Extra Sparkle Fizz (+฿10)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Live Price Summary -->
+        <div class="custom-summary">
+          <div class="summary-row">
+            <span>Base Beverage:</span>
+            <span id="basePriceDisplay">฿85</span>
+          </div>
+          <div class="summary-row">
+            <span>Toppings:</span>
+            <span id="toppingsPriceDisplay">+฿0</span>
+          </div>
+          <div class="summary-total">
+            <span>ราคารวมทั้งหมด (Total):</span>
+            <span class="total-price" id="customTotalPrice">฿85</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="cta-btn secondary-btn" id="btnCancelModal">ยกเลิก</button>
+        <button class="cta-btn primary-cta" id="btnConfirmCustom">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>ยืนยันใส่ตะกร้า (Add To Cart)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER DRAWER -->
+  <div class="drawer-backdrop hidden" id="cartDrawer">
+    <div class="drawer-card">
+      <div class="drawer-header">
+        <h3>ตะกร้าเครื่องดื่มของคุณ (Your Order)</h3>
+        <button class="modal-close" id="btnCloseCart">✕</button>
+      </div>
+      <div class="drawer-items" id="cartItemsList">
+        <p class="empty-cart-msg">ยังไม่มีเครื่องดื่มในตะกร้า ลองเลือกเครื่องดื่มแล้วกด "สั่งเลย" หรือ "ปรับแต่งรสชาติ"</p>
+      </div>
+      <div class="drawer-footer">
+        <div class="drawer-total">
+          <span>ยอดรวมทั้งสิ้น:</span>
+          <span class="grand-total" id="cartGrandTotal">฿0</span>
+        </div>
+        <button class="cta-btn primary-cta w-full" id="btnCheckout">
+          <span>ดำเนินการสั่งซื้อ (Checkout with ZUS App)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING NOTIFICATION TOAST -->
+  <div class="toast hidden" id="toastNotification">
+    <span class="toast-icon">✨</span>
+    <span class="toast-text" id="toastText">เพิ่มลงในตะกร้าสำเร็จ!</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
